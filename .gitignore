@@ -1,0 +1,11 @@
+# Ignore dependency folders
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# Ignore environment secrets
+.env
+server/.env
+
+# Ignore build/log files
+*.log
