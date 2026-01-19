@@ -28,7 +28,7 @@ app.post('/register', async (req, res) => {
 
         res.status(201).json({ message: "User created successfully!" });
     } catch (error) {
-        console.error("DETAILED ERROR:", error); // This prints to your VS Code terminal
+        console.error("DETAILED ERROR:", error);
 res.status(500).json({ error: "Registration failed", details: error });
     }
 });
@@ -53,14 +53,14 @@ app.post('/login', async (req, res) => {
 
     const token = jwt.sign(
     { userId: user._id }, 
-    process.env.JWT_SECRET || 'fallback_secret_for_testing', // Added fallback
+    process.env.JWT_SECRET || 'fallback_secret_for_testing', 
     { expiresIn: '1h' }
 );
 
         // 3. Success!
     res.status(200).json({ 
     message: "Login successful!",
-    token: token // Send this back to the user
+    token: token 
     });
 
     } catch (error: any) {
@@ -84,19 +84,19 @@ app.get('/profile', (req, res) => {
  
 
 app.get('/dashboard', (req, res) => {
-    // 1. Get the token from the request headers
+   
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Format: "Bearer <token>"
+    const token = authHeader && authHeader.split(' ')[1]; 
 
     if (!token) {
         return res.status(401).json({ error: "Access Denied: No token provided" });
     }
 
     try {
-        // 2. Verify if the token is real
+       
         const verified = jwt.verify(token, process.env.JWT_SECRET as string);
         
-        // 3. If valid, send the secret data
+       
         res.json({ 
             message: "Welcome to the secret dashboard!", 
             user: verified 
