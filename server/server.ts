@@ -19,7 +19,7 @@ app.get('/api', (req: Request, res: Response) => {
     res.send('Server is Live and API is reachable!');
 });
 
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
@@ -36,7 +36,7 @@ res.status(500).json({ error: "Registration failed", details: error });
     }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
