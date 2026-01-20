@@ -492,7 +492,7 @@ document.getElementById('register').addEventListener('submit', async (e) => {
   const password = document.getElementById('regPassword').value;
 
   try {
-    const res = await fetch('http://localhost:3000/register', {
+    const res = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
@@ -530,7 +530,7 @@ document.getElementById('login').addEventListener('submit', async (e) => {
   const password = document.getElementById('loginPassword').value;
 
   try {
-    const res = await fetch('http://localhost:3000/login', {
+    const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -539,11 +539,14 @@ document.getElementById('login').addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if (res.ok && data.token) {
-      showMessage(loginMsg, "Welcome back! Login successful.", 'success');
-      setTimeout(() => {
-        checkAuth();
-      }, 1000);
-    } else {
+  // Save the token to LocalStorage
+  localStorage.setItem('token', data.token); 
+  
+  showMessage(loginMsg, "Welcome back! Login successful.", 'success');
+  setTimeout(() => {
+    checkAuth();
+  }, 1000);
+} else {
       showMessage(loginMsg, data.error || "Invalid credentials. Please try again.", 'error');
     }
   } catch (err) {
@@ -563,11 +566,22 @@ logoutBtn.addEventListener('click', () => {
 });
 
 function checkAuth() {
-  const isLoggedIn = Math.random() > 0.5; // Replace with actual token check
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token; // Returns true if token exists
+  
   logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
+  
+  if (isLoggedIn) {
+    document.getElementById('loginForm').classList.add('hidden');
+    // You could also fetch user profile data here using the token
+  }
 }
 
-checkAuth();
+// Update Logout to clear the token
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('token');
+  location.reload();
+});
 </script>
 
 </body>
