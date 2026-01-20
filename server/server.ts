@@ -15,8 +15,8 @@ app.use(cors({
 app.use(express.json());
 
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Server is Live!');
+app.get('/api', (req: Request, res: Response) => {
+    res.send('Server is Live and API is reachable!');
 });
 
 app.post('/register', async (req, res) => {
